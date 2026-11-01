@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reading-list-cli"
+version = "0.1.0"
+description = "Local-first CLI that tracks books and articles to read, with AI-generated one-sentence summaries from a configurable OpenAI-compatible endpoint (default Ollama)."
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Asdale Dynamics, LLC"}]
+keywords = ["cli", "reading-list", "ollama", "local-ai", "books", "articles"]
+
+[project.scripts]
+reading-list = "reading_list.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["reading_list*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
