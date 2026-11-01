@@ -5,7 +5,7 @@ import sys
 
 from .config import DEFAULTS, load_config, save_config
 from .storage import Storage, STATUSES, TYPES
-from .summarizer import SummarizerError, generate_summary
+from .summarizer import generate_summary
 
 
 def _format_entry(entry, show_summary=False):
@@ -49,11 +49,7 @@ def cmd_summary(args):
     if entry.get("summary") and not args.force:
         print(f"{entry['id']}: {entry['summary']}")
         return 0
-    try:
-        summary = generate_summary(entry["title"], entry["type"], entry.get("author", ""))
-    except SummarizerError as exc:
-        print(f"error: {exc}", file=sys.stderr)
-        return 1
+    summary = generate_summary(entry["title"], entry["type"], entry.get("author", ""))
     if summary is None:
         print(
             f"error: AI endpoint unavailable (set READING_LIST_ENDPOINT or start Ollama)",
@@ -145,7 +141,6 @@ def build_parser():
     p_cfg = sub.add_parser("config", help="show or save config")
     p_cfg.add_argument("--endpoint")
     p_cfg.add_argument("--model")
-    p_cfg.add_argument("--show", action="store_true")
     p_cfg.set_defaults(func=cmd_config)
 
     p_rm = sub.add_parser("remove", help="remove an entry")

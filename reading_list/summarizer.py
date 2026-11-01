@@ -7,10 +7,6 @@ import urllib.request
 from .config import load_config
 
 
-class SummarizerError(Exception):
-    pass
-
-
 def generate_summary(title, entry_type, author="", config=None):
     """Generate a one-sentence summary via a local OpenAI-compatible endpoint.
 
@@ -63,6 +59,8 @@ def generate_summary(title, entry_type, author="", config=None):
     except json.JSONDecodeError:
         return None
 
+    if not isinstance(parsed, dict):
+        return None
     choices = parsed.get("choices")
     if not choices:
         return None

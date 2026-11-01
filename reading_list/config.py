@@ -11,8 +11,16 @@ DEFAULT_SYSTEM_PROMPT = (
     "Be plain, warm, and beginner-friendly. No spoilers."
 )
 
-CONFIG_DIR = Path(os.environ.get("READING_LIST_CONFIG_DIR", Path.home() / ".config" / "reading-list"))
-DATA_DIR = Path(os.environ.get("READING_LIST_DATA_DIR", Path.home() / ".local" / "share" / "reading-list"))
+_CONFIG_DIR_ENV = "READING_LIST_CONFIG_DIR"
+_DATA_DIR_ENV = "READING_LIST_DATA_DIR"
+_ENDPOINT_ENV = "READING_LIST_ENDPOINT"
+_MODEL_ENV = "READING_LIST_MODEL"
+
+_DEFAULT_CONFIG_DIR = Path.home() / ".config" / "reading-list"
+_DEFAULT_DATA_DIR = Path.home() / ".local" / "share" / "reading-list"
+
+CONFIG_DIR = Path(os.environ.get(_CONFIG_DIR_ENV, _DEFAULT_CONFIG_DIR))
+DATA_DIR = Path(os.environ.get(_DATA_DIR_ENV, _DEFAULT_DATA_DIR))
 CONFIG_PATH = CONFIG_DIR / "config.json"
 DATA_PATH = DATA_DIR / "reading_list.json"
 
@@ -35,8 +43,8 @@ def load_config():
                 config.update(loaded)
         except (OSError, json.JSONDecodeError):
             pass
-    env_endpoint = os.environ.get("READING_LIST_ENDPOINT")
-    env_model = os.environ.get("READING_LIST_MODEL")
+    env_endpoint = os.environ.get(_ENDPOINT_ENV)
+    env_model = os.environ.get(_MODEL_ENV)
     if env_endpoint:
         config["endpoint"] = env_endpoint.rstrip("/")
     if env_model:
